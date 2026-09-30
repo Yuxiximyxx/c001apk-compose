@@ -111,7 +111,13 @@ public class ImageZoomer {
         }
 
         // 为什么要每次都重新获取 ScaleType ？因为 reset 是可以反复执行的，在此之前 ScaleType 可能会改变
-        scaleType = imageView.getScaleType();
+        // 但 zoomer 工作期间 ImageView 的 ScaleType 为 MATRIX，必须跳过捕获；
+        // 否则 recycle() 会把 MATRIX 恢复回去，配合被清空的 matrix，
+        // 图片将按 1:1 原生尺寸绘制（只显示一半）
+        ScaleType currentScaleType = imageView.getScaleType();
+        if (currentScaleType != ScaleType.MATRIX) {
+            scaleType = currentScaleType;
+        }
         imageView.setScaleType(ScaleType.MATRIX);
 
         zoomScales.reset(imageView.getContext(), sizes, scaleType, rotateDegrees, readMode);

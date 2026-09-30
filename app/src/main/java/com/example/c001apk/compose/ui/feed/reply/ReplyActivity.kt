@@ -469,16 +469,11 @@ class ReplyActivity : AppCompatActivity(),
         binding.out.setOnTouchListener(this)
         (binding.main as? SmoothInputLayout)?.setOnVisibilityChangeListener(this)
         (binding.main as? SmoothInputLayout)?.setOnKeyboardChangeListener(null)
-        val radius = listOf(16.dp.toFloat(), 16.dp.toFloat(), 0f, 0f)
+        val radius = 24.dp.toFloat()
         val radiusBg = GradientDrawable().apply {
             shape = GradientDrawable.RECTANGLE
             setColor(this@ReplyActivity.color)
-            cornerRadii = floatArrayOf(
-                radius[0], radius[0],
-                radius[1], radius[1],
-                radius[2], radius[2],
-                radius[3], radius[3]
-            )
+            cornerRadius = radius
         }
         if (binding.main is SmoothInputLayout) {
             binding.inputLayout.background = radiusBg
