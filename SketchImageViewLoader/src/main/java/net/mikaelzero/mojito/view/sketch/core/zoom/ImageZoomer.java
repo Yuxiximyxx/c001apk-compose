@@ -111,6 +111,10 @@ public class ImageZoomer {
 
         sizes.resetSizes(imageView);
         boolean working = isWorking();
+        android.util.Log.d("MojitoFix", "reset(" + why + "): viewMeasured=" + imageView.getWidth() + "x" + imageView.getHeight()
+                + " viewSize=" + sizes.viewSize + " drawableSize=" + sizes.drawableSize + " imageSize=" + sizes.imageSize
+                + " keepScaleType=" + keepScaleType + " viewScaleType(before recycle)=" + viewScaleType
+                + " readMode=" + readMode + " working=" + working);
         if (!working) {
             return false;
         }

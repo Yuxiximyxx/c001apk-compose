@@ -37,17 +37,20 @@ public class Sizes {
         final int imageViewWidth = imageView.getWidth() - imageView.getPaddingLeft() - imageView.getPaddingRight();
         final int imageViewHeight = imageView.getHeight() - imageView.getPaddingTop() - imageView.getPaddingBottom();
         if (imageViewWidth == 0 || imageViewHeight == 0) {
+            android.util.Log.d("MojitoFix", "resetSizes: view has no size (" + imageViewWidth + "x" + imageViewHeight + "), keep old");
             return;
         }
 
         Drawable drawable = SketchUtils.getLastDrawable(imageView.getDrawable());
         if (drawable == null) {
+            android.util.Log.d("MojitoFix", "resetSizes: drawable is null, keep old");
             return;
         }
 
         final int drawableWidth = drawable.getIntrinsicWidth();
         final int drawableHeight = drawable.getIntrinsicHeight();
         if (drawableWidth == 0 || drawableHeight == 0) {
+            android.util.Log.d("MojitoFix", "resetSizes: drawable has no intrinsic size, keep old");
             return;
         }
 
@@ -59,6 +62,8 @@ public class Sizes {
         } else {
             imageSize.set(drawableWidth, drawableHeight);
         }
+        android.util.Log.d("MojitoFix", "resetSizes: view=" + viewSize + " drawable=" + drawableSize + " image=" + imageSize
+                + " drawableClass=" + drawable.getClass().getSimpleName());
     }
 
     void clean() {

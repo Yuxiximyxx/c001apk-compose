@@ -346,6 +346,10 @@ class ScaleDragHelper implements ScaleDragGestureDetector.OnScaleDragGestureList
 
         float initScale = imageZoomer.getZoomScales().getInitZoomScale();
 
+        android.util.Log.d("MojitoFix", "resetBaseMatrix: finalScaleType=" + finalScaleType + " initScale=" + initScale
+                + " viewSize=" + viewSize + " drawableSize=" + drawableSize + " imageSize=" + imageSize
+                + " readMode=" + readMode);
+
         ImageSizeCalculator sizeCalculator = Sketch.with(imageZoomer.getImageView().getContext()).getConfiguration().getSizeCalculator();
         if (readMode && sizeCalculator.canUseReadModeByHeight(imageWidth, imageHeight)) {
             baseMatrix.postScale(initScale, initScale);
@@ -371,6 +375,9 @@ class ScaleDragHelper implements ScaleDragGestureDetector.OnScaleDragGestureList
             RectF mTempDst = new RectF(0, 0, viewSize.getWidth(), viewSize.getHeight());
             baseMatrix.setRectToRect(mTempSrc, mTempDst, Matrix.ScaleToFit.FILL);
         }
+        float[] v = new float[9];
+        baseMatrix.getValues(v);
+        android.util.Log.d("MojitoFix", "resetBaseMatrix result: scaleX=" + v[0] + " transX=" + v[2] + " scaleY=" + v[4] + " transY=" + v[5]);
     }
 
     private void resetSupportMatrix() {

@@ -162,12 +162,18 @@ class SketchContentLoaderImpl : ContentLoader, LifecycleObserver {
     }
 
     override fun loadAnimFinish() {
-        if (isLongHeightImage || isLongWidthImage) {
+        Log.d("MojitoFix", "loadAnimFinish: isLongH=$isLongHeightImage isLongW=$isLongWidthImage viewMeasured=${sketchImageView.width}x${sketchImageView.height} scaleTypeBefore=${sketchImageView.scaleType}")
+        // post 到下一帧：确保 changeContentViewToFullscreen 的 requestLayout 已完成，
+        // zoomer.reset() 读到的是全屏后的真实尺寸，而不是过渡动画结束时的旧尺寸
+        sketchImageView.post {
+            if (isLongHeightImage || isLongWidthImage) {
 
-        } else {
-            sketchImageView.scaleType = ImageView.ScaleType.FIT_CENTER
+            } else {
+                sketchImageView.scaleType = ImageView.ScaleType.FIT_CENTER
+            }
+            sketchImageView.zoomer?.blockDisplayer?.setPause(false)
+            Log.d("MojitoFix", "loadAnimFinish(posted): viewMeasured=${sketchImageView.width}x${sketchImageView.height} scaleTypeAfter=${sketchImageView.scaleType}")
         }
-        sketchImageView.zoomer?.blockDisplayer?.setPause(false)
     }
 
     override fun needReBuildSize(): Boolean {
@@ -192,6 +198,7 @@ class SketchContentLoaderImpl : ContentLoader, LifecycleObserver {
         } else {
             sketchImageView.scaleType = ImageView.ScaleType.CENTER_CROP
         }
+        Log.d("MojitoFix", "isLongImage: input=${width}x${height} isLongH=$isLongHeightImage isLongW=$isLongWidthImage -> viewScaleType=${sketchImageView.scaleType}")
         return isLongHeightImage || isLongWidthImage
     }
 

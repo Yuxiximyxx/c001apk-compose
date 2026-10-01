@@ -405,6 +405,7 @@ class ImageMojitoFragment : Fragment(), IMojitoFragment, OnMojitoViewCallback {
             w = ScreenUtils.getScreenWidth(context)
             h = ScreenUtils.getScreenHeight(context)
         }
+        android.util.Log.d("MojitoFix", "getRealSizeFromFile: file=${image.name} header=(${options.outWidth}x${options.outHeight}) targetUrl=${fragmentConfig.targetUrl} final=(${w}x${h}) isLong=$isLongImage")
         return arrayOf(w, h)
     }
 

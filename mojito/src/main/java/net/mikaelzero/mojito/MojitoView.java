@@ -204,7 +204,10 @@ public class MojitoView extends FrameLayout {
         imageWrapper.setHeight(mOriginHeight);
         imageWrapper.setMarginLeft(mOriginLeft);
         imageWrapper.setMarginTop(mOriginTop);
-
+        Log.d("MojitoFix", "setOriginParams: screen=" + screenWidth + "x" + screenHeight
+                + " real=" + realWidth + "x" + realHeight
+                + " origin=" + mOriginWidth + "x" + mOriginHeight + " at(" + mOriginLeft + "," + mOriginTop + ")"
+                + " target=" + targetImageWidth + "x" + targetImageHeight + " top=" + targetImageTop);
     }
 
     private void beginShow(final boolean showImmediately) {
@@ -237,6 +240,8 @@ public class MojitoView extends FrameLayout {
     private void setShowEndParams() {
         isAnimating = false;
         setImageDataOfAnimatorEnd();
+        Log.d("MojitoFix", "setShowEndParams: wrapperBeforeFullscreen=" + imageWrapper.getWidth() + "x" + imageWrapper.getHeight()
+                + " contentLayoutMeasured=" + contentLayout.getMeasuredWidth() + "x" + contentLayout.getMeasuredHeight());
         changeContentViewToFullscreen();
         contentLoader.loadAnimFinish();
         if (onMojitoViewCallback != null) {
@@ -693,6 +698,7 @@ public class MojitoView extends FrameLayout {
         imageWrapper.setWidth(screenWidth);
         imageWrapper.setMarginTop(0);
         imageWrapper.setMarginLeft(0);
+        Log.d("MojitoFix", "changeContentViewToFullscreen: wrapperSetTo=" + screenWidth + "x" + screenHeight);
     }
 
     private void setImageDataOfAnimatorEnd() {

@@ -58,12 +58,16 @@ public class ImageZoomFunction extends ViewFunction {
 
     @Override
     public boolean onDrawableChanged(@NonNull String callPosition, @Nullable Drawable oldDrawable, @Nullable Drawable newDrawable) {
+        android.util.Log.d("MojitoFix", "onDrawableChanged(" + callPosition + "): new=" + (newDrawable == null ? "null" : newDrawable.getClass().getSimpleName() + " " + newDrawable.getIntrinsicWidth() + "x" + newDrawable.getIntrinsicHeight())
+                + " view=" + zoomer.getImageView().getWidth() + "x" + zoomer.getImageView().getHeight());
         zoomer.reset("onDrawableChanged");
         return false;
     }
 
     @Override
     public void onSizeChanged(int left, int top, int right, int bottom) {
+        // 注：参数名是历史遗留，实际顺序为 (w, h, oldw, oldh)
+        android.util.Log.d("MojitoFix", "onSizeChanged: " + right + "x" + bottom + " -> " + left + "x" + top);
         zoomer.reset("onSizeChanged");
     }
 
