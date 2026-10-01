@@ -102,6 +102,11 @@ public class ImageZoomer {
      * @return true：重置以后可以工作，false：重置以后无法工作，通常是新的 {@link Drawable} 不满足条件导致
      */
     public boolean reset(@NonNull String why) {
+        // 先记下有效的 ScaleType：recycle() 会把 scaleType 字段置空，
+        // 而 zoomer 工作期间 ImageView 的 ScaleType 为 MATRIX，必须沿用旧值，不能捕获 MATRIX
+        ScaleType viewScaleType = imageView.getScaleType();
+        ScaleType keepScaleType = viewScaleType != ScaleType.MATRIX ? viewScaleType : scaleType;
+
         recycle(why);
 
         sizes.resetSizes(imageView);
@@ -110,14 +115,9 @@ public class ImageZoomer {
             return false;
         }
 
-        // 为什么要每次都重新获取 ScaleType ？因为 reset 是可以反复执行的，在此之前 ScaleType 可能会改变
-        // 但 zoomer 工作期间 ImageView 的 ScaleType 为 MATRIX，必须跳过捕获；
-        // 否则 recycle() 会把 MATRIX 恢复回去，配合被清空的 matrix，
-        // 图片将按 1:1 原生尺寸绘制（只显示一半）
-        ScaleType currentScaleType = imageView.getScaleType();
-        if (currentScaleType != ScaleType.MATRIX) {
-            scaleType = currentScaleType;
-        }
+        // 兜底：scaleType 绝不能为 null，否则 ScaleDragHelper 会生成单位矩阵，
+        // 图片按 1:1 绘制在左上角（只显示上半部分、下方黑色）
+        scaleType = keepScaleType != null ? keepScaleType : ScaleType.FIT_CENTER;
         imageView.setScaleType(ScaleType.MATRIX);
 
         zoomScales.reset(imageView.getContext(), sizes, scaleType, rotateDegrees, readMode);

@@ -338,6 +338,11 @@ class ScaleDragHelper implements ScaleDragGestureDetector.OnScaleDragGestureList
         } else {
             finalScaleType = scaleType;
         }
+        // 防御性兜底：scaleType 不应为 null，若为 null 按 FIT_CENTER 处理，
+        // 避免 baseMatrix 保持单位矩阵导致图片 1:1 绘制在左上角
+        if (finalScaleType == null) {
+            finalScaleType = ScaleType.FIT_CENTER;
+        }
 
         float initScale = imageZoomer.getZoomScales().getInitZoomScale();
 
