@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.content.res.ColorStateList
-import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
@@ -124,7 +123,6 @@ class ReplyActivity : AppCompatActivity(),
         getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     }
     private val color by lazy { resolveSurfaceContainerColor() }
-    private val imeScrimDrawable by lazy { ColorDrawable(color) }
     private val recentList = ArrayList<List<Pair<String, Int>>>()
     private val list = listOf(recentList, emojiList, coolBList)
     private lateinit var pickContent: ActivityResultLauncher<String>
@@ -195,18 +193,6 @@ class ReplyActivity : AppCompatActivity(),
                     )
                 }
                 updateReplyPanelTranslation(translation)
-                if (useImeInset && imeInset > 0 && binding.bottomLayout == null && !isEmojiPanelVisible) {
-                    imeScrimDrawable.setBounds(
-                        0,
-                        binding.main.height - (imeInset - navInset),
-                        binding.main.width,
-                        binding.main.height
-                    )
-                    binding.main.overlay.remove(imeScrimDrawable)
-                    binding.main.overlay.add(imeScrimDrawable)
-                } else {
-                    binding.main.overlay.remove(imeScrimDrawable)
-                }
                 return insets
             }
             override fun onEnd(animation: WindowInsetsAnimationCompat) {
@@ -244,18 +230,6 @@ class ReplyActivity : AppCompatActivity(),
                     navInset = navInset
                 )
                 updateReplyPanelTranslation(translation)
-                if (useImeInset && imeInset > 0 && binding.bottomLayout == null && !isEmojiPanelVisible) {
-                    imeScrimDrawable.setBounds(
-                        0,
-                        binding.main.height - (imeInset - navInset),
-                        binding.main.width,
-                        binding.main.height
-                    )
-                    binding.main.overlay.remove(imeScrimDrawable)
-                    binding.main.overlay.add(imeScrimDrawable)
-                } else {
-                    binding.main.overlay.remove(imeScrimDrawable)
-                }
             }
             binding.main.updatePadding(
                 bottom = baseRootPaddingBottom + navInset,
