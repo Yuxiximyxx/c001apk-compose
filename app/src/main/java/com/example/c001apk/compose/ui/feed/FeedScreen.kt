@@ -584,14 +584,10 @@ fun FeedScreen(
     }
 
     if (openBottomSheet) {
-        val topInsetPx = WindowInsets.systemBars.getTop(LocalDensity.current)
-        val topInset = with(LocalDensity.current) { topInsetPx.toDp() }
-
         ModalBottomSheet(
             onDismissRequest = {
                 resetBottomSheet()
             },
-            modifier = Modifier.padding(top = topInset),
             sheetState = bottomSheetState,
         ) {
             LazyColumn(
