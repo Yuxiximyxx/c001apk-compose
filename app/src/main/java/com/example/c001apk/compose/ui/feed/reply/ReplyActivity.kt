@@ -784,8 +784,12 @@ class ReplyActivity : AppCompatActivity(),
         super.onAttachedToWindow()
         @Suppress("DEPRECATION")
         window.statusBarColor = Color.TRANSPARENT
+        // 导航条沉浸：透明，内容延伸到导航条之下（root 已按 navInset 加 bottom padding，不会被遮挡）
         @Suppress("DEPRECATION")
-        window.navigationBarColor = SurfaceColors.SURFACE_1.getColor(this)
+        window.navigationBarColor = Color.TRANSPARENT
+        if (SDK_INT >= 29) {
+            window.isNavigationBarContrastEnforced = false
+        }
     }
 
     private fun showInput() {
