@@ -68,11 +68,13 @@ import com.example.c001apk.compose.ui.ffflist.FFFListScreen
 import com.example.c001apk.compose.ui.ffflist.FFFListType
 import com.example.c001apk.compose.ui.history.HistoryScreen
 import com.example.c001apk.compose.ui.login.LoginScreen
+import com.example.c001apk.compose.ui.message.MessageScreen
 import com.example.c001apk.compose.ui.notification.NoticeScreen
 import com.example.c001apk.compose.ui.others.CopyTextScreen
 import com.example.c001apk.compose.ui.search.SearchResultScreen
 import com.example.c001apk.compose.ui.search.SearchScreen
 import com.example.c001apk.compose.ui.settings.AboutScreen
+import com.example.c001apk.compose.ui.settings.SettingsScreen
 import com.example.c001apk.compose.ui.settings.LicenseScreen
 import com.example.c001apk.compose.ui.settings.ParamsScreen
 import com.example.c001apk.compose.ui.topic.TopicScreen
@@ -113,7 +115,7 @@ fun MainNavigation(
     }
 
     fun onViewFeed(viewId: String, isViewReply: Boolean) {
-        if (selectIndex != 2 && !isCompat) {
+        if (selectIndex == 0 && !isCompat) {
             compatId = viewId
             compatReply = isViewReply
         } else {
@@ -165,6 +167,12 @@ fun MainNavigation(
                     onAboutClick = {
                         navController.navigate(Router.ABOUT.name)
                     },
+                    onMessageClick = {
+                        navController.navigate(Router.MESSAGE.name)
+                    },
+                    onSettingsClick = {
+                        navController.navigate(Router.SETTINGS.name)
+                    },
                     onViewUser = navController::navigateToUser,
                     onViewFeed = ::onViewFeed,
                     onSearch = {
@@ -189,6 +197,38 @@ fun MainNavigation(
                     onViewNotice = navController::navigateToNotice,
                     onViewBlackList = navController::navigateToBlackList,
                     onViewHistory = navController::navigateToHistory,
+                )
+            }
+
+            composable(route = Router.MESSAGE.name) {
+                MessageScreen(
+                    onBackClick = navController::popBackStack,
+                    onLogin = {
+                        navController.navigate(Router.LOGIN.name)
+                    },
+                    onViewUser = navController::navigateToUser,
+                    onViewFeed = navController::navigateToFeed,
+                    onOpenLink = ::onOpenLink,
+                    onCopyText = navController::navigateToCopyText,
+                    onViewFFFList = { viewUid, viewType ->
+                        navController.navigateToFFFList(viewUid, viewType, null, null)
+                    },
+                    onReport = ::onReport,
+                    onViewNotice = navController::navigateToNotice,
+                    onViewHistory = navController::navigateToHistory,
+                )
+            }
+
+            composable(route = Router.SETTINGS.name) {
+                SettingsScreen(
+                    onBackClick = navController::popBackStack,
+                    onParamsClick = {
+                        navController.navigate(Router.PARAMS.name)
+                    },
+                    onAboutClick = {
+                        navController.navigate(Router.ABOUT.name)
+                    },
+                    onViewBlackList = navController::navigateToBlackList,
                 )
             }
 
@@ -703,7 +743,7 @@ fun MainNavigation(
             }
 
         }
-        if (selectIndex != 2 && !isCompat) {
+        if (selectIndex == 0 && !isCompat) {
             if (compatId.isNullOrEmpty()) {
                 Box(
                     modifier = Modifier

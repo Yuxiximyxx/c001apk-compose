@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">c001apk</string>
     <string name="home">首页</string>
+    <string name="mine">我的</string>
     <string name="message">消息</string>
     <string name="settings">设置</string>
     <string name="about_source_code"><![CDATA[原仓库 : %1$s]]></string>

@@ -86,6 +86,7 @@ import com.example.c001apk.compose.constant.Constants.URL_SOURCE_CODE_FORK
 import com.example.c001apk.compose.logic.model.HapticStrength
 import com.example.c001apk.compose.logic.providable.LocalUserPreferences
 import com.example.c001apk.compose.ui.blacklist.BlackListType
+import com.example.c001apk.compose.ui.component.BackButton
 import com.example.c001apk.compose.ui.component.HtmlText
 import com.example.c001apk.compose.ui.component.MoreMenuButton
 import com.example.c001apk.compose.ui.component.rememberHapticClick
@@ -111,6 +112,7 @@ import java.util.Formatter
 @Composable
 fun SettingsScreen(
     viewModel: SettingsViewModel = hiltViewModel(),
+    onBackClick: (() -> Unit)? = null,
     onParamsClick: () -> Unit,
     onAboutClick: () -> Unit,
     onViewBlackList: (String) -> Unit,
@@ -145,6 +147,11 @@ fun SettingsScreen(
         topBar = {
             TopAppBar(
                 title = { Text(text = "设置") },
+                navigationIcon = {
+                    onBackClick?.let { back ->
+                        BackButton { back() }
+                    }
+                },
                 actions = {
                     Box(Modifier.wrapContentSize(Alignment.TopEnd)) {
                         MoreMenuButton { dropdownMenuExpanded = true }

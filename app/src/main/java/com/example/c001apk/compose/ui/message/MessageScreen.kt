@@ -14,6 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
@@ -31,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.c001apk.compose.logic.providable.LocalUserPreferences
+import com.example.c001apk.compose.ui.component.BackButton
 import com.example.c001apk.compose.ui.component.FooterCard
 import com.example.c001apk.compose.ui.component.ItemCard
 import com.example.c001apk.compose.ui.component.cards.MessageFFFCard
@@ -50,6 +52,7 @@ import com.example.c001apk.compose.util.makeToast
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MessageScreen(
+    onBackClick: (() -> Unit)? = null,
     onLogin: () -> Unit,
     onViewUser: (String) -> Unit,
     onViewFeed: (String, Boolean) -> Unit,
@@ -80,6 +83,14 @@ fun MessageScreen(
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
+        topBar = {
+            onBackClick?.let { back ->
+                TopAppBar(
+                    title = { Text(text = stringResource(id = com.example.c001apk.compose.R.string.message)) },
+                    navigationIcon = { BackButton { back() } },
+                )
+            }
+        },
     ) { paddingValues ->
         Column(
             modifier = Modifier

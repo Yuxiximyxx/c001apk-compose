@@ -29,8 +29,7 @@ import com.example.c001apk.compose.logic.model.UpdateCheckItem
 import com.example.c001apk.compose.ui.component.SlideTransition
 import com.example.c001apk.compose.ui.component.rememberHapticClick
 import com.example.c001apk.compose.ui.home.HomeScreen
-import com.example.c001apk.compose.ui.message.MessageScreen
-import com.example.c001apk.compose.ui.settings.SettingsScreen
+import com.example.c001apk.compose.ui.mine.MyScreen
 import com.example.c001apk.compose.util.ReportType
 
 /**
@@ -44,6 +43,8 @@ fun MainScreen(
     resetBadge: () -> Unit,
     onParamsClick: () -> Unit,
     onAboutClick: () -> Unit,
+    onMessageClick: () -> Unit,
+    onSettingsClick: () -> Unit,
     onViewUser: (String) -> Unit,
     onViewFeed: (String, Boolean) -> Unit,
     onSearch: () -> Unit,
@@ -62,8 +63,7 @@ fun MainScreen(
 
     val screens = listOf(
         Router.HOME,
-        Router.MESSAGE,
-        Router.SETTINGS
+        Router.MINE,
     )
 
     val savableStateHolder = rememberSaveableStateHolder()
@@ -77,13 +77,13 @@ fun MainScreen(
 
     NavigationSuiteScaffold(
         navigationSuiteItems = {
-            screens.forEachIndexed { index, screen ->
+            screens.forEach { screen ->
                 item(
                     icon = {
                         BadgedBox(
                             badge = {
                                 androidx.compose.animation.AnimatedVisibility(
-                                    visible = if (index == 1) badge > 0
+                                    visible = if (screen == Router.MINE) badge > 0
                                     else false,
                                     enter = scaleIn(animationSpec = spring(stiffness = Spring.StiffnessMediumLow)),
                                     exit = scaleOut(animationSpec = spring(stiffness = Spring.StiffnessMediumLow))
@@ -115,8 +115,6 @@ fun MainScreen(
                         with(screens.indexOf(screen)) {
                             if (selectIndex == 0 && this == 0) {
                                 refreshState = true
-                            } else if (this == 1 && badge != 0) {
-                                resetBadge()
                             }
                             setSelectIndex(this)
                         }
@@ -158,22 +156,15 @@ fun MainScreen(
                             onReport = onReport,
                         )
 
-                        1 -> MessageScreen(
+                        1 -> MyScreen(
+                            badge = badge,
+                            onMessageClick = {
+                                resetBadge()
+                                onMessageClick()
+                            },
+                            onSettingsClick = onSettingsClick,
                             onLogin = onLogin,
                             onViewUser = onViewUser,
-                            onViewFeed = onViewFeed,
-                            onOpenLink = onOpenLink,
-                            onCopyText = onCopyText,
-                            onViewFFFList = onViewFFFList,
-                            onReport = onReport,
-                            onViewNotice = onViewNotice,
-                            onViewHistory = onViewHistory,
-                        )
-
-                        2 -> SettingsScreen(
-                            onParamsClick = onParamsClick,
-                            onAboutClick = onAboutClick,
-                            onViewBlackList = onViewBlackList,
                         )
                     }
                 }

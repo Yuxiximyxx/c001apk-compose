@@ -5,8 +5,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Message
 import androidx.compose.material.icons.automirrored.outlined.Message
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.c001apk.compose.R
@@ -30,6 +32,13 @@ sealed class Router(
         stringId = R.string.home,
         unselectedIcon = Icons.Outlined.Home,
         selectedIcon = Icons.Default.Home
+    )
+
+    data object MINE : Router(
+        name = "MINE",
+        stringId = R.string.mine,
+        unselectedIcon = Icons.Outlined.Person,
+        selectedIcon = Icons.Filled.Person
     )
 
     data object MESSAGE : Router(
