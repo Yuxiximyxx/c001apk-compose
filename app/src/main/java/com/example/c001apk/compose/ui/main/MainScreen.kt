@@ -165,6 +165,9 @@ fun MainScreen(
                             onSettingsClick = onSettingsClick,
                             onLogin = onLogin,
                             onViewUser = onViewUser,
+                            onOpenLink = onOpenLink,
+                            onViewFFFList = onViewFFFList,
+                            onViewHistory = onViewHistory,
                         )
                     }
                 }
