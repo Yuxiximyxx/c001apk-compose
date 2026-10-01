@@ -203,19 +203,12 @@ fun MainNavigation(
             composable(route = Router.MESSAGE.name) {
                 MessageScreen(
                     onBackClick = navController::popBackStack,
-                    onLogin = {
-                        navController.navigate(Router.LOGIN.name)
-                    },
                     onViewUser = navController::navigateToUser,
                     onViewFeed = navController::navigateToFeed,
                     onOpenLink = ::onOpenLink,
                     onCopyText = navController::navigateToCopyText,
-                    onViewFFFList = { viewUid, viewType ->
-                        navController.navigateToFFFList(viewUid, viewType, null, null)
-                    },
                     onReport = ::onReport,
                     onViewNotice = navController::navigateToNotice,
-                    onViewHistory = navController::navigateToHistory,
                 )
             }
 
