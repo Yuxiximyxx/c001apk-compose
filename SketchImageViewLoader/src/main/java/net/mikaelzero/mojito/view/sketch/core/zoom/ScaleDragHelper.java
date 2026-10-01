@@ -330,7 +330,7 @@ class ScaleDragHelper implements ScaleDragGestureDetector.OnScaleDragGestureList
         final int imageHeight = imageZoomer.getRotateDegrees() % 180 == 0 ? imageSize.getHeight() : imageSize.getWidth();
         boolean imageThanViewLarge = drawableWidth > viewSize.getWidth() || drawableHeight > viewSize.getHeight();
 
-        final ScaleType finalScaleType;
+        ScaleType finalScaleType;
         if (scaleType == ScaleType.MATRIX) {
             finalScaleType = ScaleType.FIT_CENTER;
         } else if (scaleType == ScaleType.CENTER_INSIDE) {
