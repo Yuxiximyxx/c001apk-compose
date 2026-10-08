@@ -153,7 +153,9 @@ class SketchContentLoaderImpl : ContentLoader, LifecycleObserver {
 
         } else {
             if (isResetSize) {
-                sketchImageView.scaleType = ImageView.ScaleType.CENTER_CROP
+                // 走 zoomer.setScaleType，保证 zoomer 矩阵同步更新
+                sketchImageView.zoomer?.setScaleType(ImageView.ScaleType.CENTER_CROP)
+                    ?: run { sketchImageView.scaleType = ImageView.ScaleType.CENTER_CROP }
             }
         }
     }
@@ -169,7 +171,10 @@ class SketchContentLoaderImpl : ContentLoader, LifecycleObserver {
             if (isLongHeightImage || isLongWidthImage) {
 
             } else {
-                sketchImageView.scaleType = ImageView.ScaleType.FIT_CENTER
+                // 必须走 zoomer.setScaleType：直接改 ImageView.scaleType 会绕过 zoomer，
+                // 导致 zoomer 内部矩阵过期，图片错位/黑块
+                sketchImageView.zoomer?.setScaleType(ImageView.ScaleType.FIT_CENTER)
+                    ?: run { sketchImageView.scaleType = ImageView.ScaleType.FIT_CENTER }
             }
             sketchImageView.zoomer?.blockDisplayer?.setPause(false)
             Log.d("MojitoFix", "loadAnimFinish(posted): viewMeasured=${sketchImageView.width}x${sketchImageView.height} scaleTypeAfter=${sketchImageView.scaleType}")
@@ -196,7 +201,9 @@ class SketchContentLoaderImpl : ContentLoader, LifecycleObserver {
         if (isLongHeightImage || isLongWidthImage) {
 
         } else {
-            sketchImageView.scaleType = ImageView.ScaleType.CENTER_CROP
+            // 走 zoomer.setScaleType，保证 zoomer 矩阵同步更新
+            sketchImageView.zoomer?.setScaleType(ImageView.ScaleType.CENTER_CROP)
+                ?: run { sketchImageView.scaleType = ImageView.ScaleType.CENTER_CROP }
         }
         Log.d("MojitoFix", "isLongImage: input=${width}x${height} isLongH=$isLongHeightImage isLongW=$isLongWidthImage -> viewScaleType=${sketchImageView.scaleType}")
         return isLongHeightImage || isLongWidthImage
