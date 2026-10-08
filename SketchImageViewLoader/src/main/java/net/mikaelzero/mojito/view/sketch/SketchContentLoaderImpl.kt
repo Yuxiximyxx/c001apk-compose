@@ -191,7 +191,9 @@ class SketchContentLoaderImpl : ContentLoader, LifecycleObserver {
 
     override fun isLongImage(width: Int, height: Int): Boolean {
         isLongHeightImage = height > width * 40f / 9f
-        isLongWidthImage = width > height * 8 && width > (ScreenUtils.getScreenWidth(sketchImageView.context) * 2)
+        // 宽全景图阈值从 8 倍放宽到 3 倍：4:1 左右的拼接长截图之前会被当普通图 FIT_CENTER，
+        // 在竖屏手机上压成细条、上下大黑边；放宽后走阅读模式（高度充满+横滑查看）
+        isLongWidthImage = width > height * 3 && width > ScreenUtils.getScreenWidth(sketchImageView.context)
         sketchImageView.zoomer?.isReadMode = isLongHeightImage || isLongWidthImage
         if (isLongWidthImage) {
             longImageHeightOrWidth = width
