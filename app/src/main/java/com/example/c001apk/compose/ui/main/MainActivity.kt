@@ -22,7 +22,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.core.graphics.Insets
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.c001apk.compose.constant.Constants
 import com.example.c001apk.compose.logic.providable.LocalUserPreferences
 import com.example.c001apk.compose.logic.repository.UserPreferencesRepository
 import com.example.c001apk.compose.ui.theme.C001apkComposeTheme
@@ -123,14 +122,13 @@ class MainActivity : ComponentActivity() {
                 if (preferences.xAppDevice.isEmpty())
                     viewModel.regenerateParams()
 
-                // 酷安服务器校验客户端版本：DataStore 里存的旧版本号会导致
-                // 评论等接口被拒，检测到与当前 Constants 不一致就强制更新
+                // 回滚：之前版本误把版本号升到 16.4.0 存进 DataStore，
+                // 现在改回 13.4.1，保证和 Constants 一致
                 LaunchedEffect(preferences.versionName) {
-                    if (preferences.versionName != Constants.VERSION_NAME) {
-                        userPreferencesRepository.setVersionName(Constants.VERSION_NAME)
-                        userPreferencesRepository.setVersionCode(Constants.VERSION_CODE)
-                        userPreferencesRepository.setApiVersion(Constants.API_VERSION)
-                        viewModel.regenerateParams()
+                    if (preferences.versionName != "13.4.1") {
+                        userPreferencesRepository.setVersionName("13.4.1")
+                        userPreferencesRepository.setVersionCode("2312121")
+                        userPreferencesRepository.setApiVersion("13")
                     }
                 }
 
